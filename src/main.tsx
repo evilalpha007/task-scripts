@@ -25,8 +25,8 @@ export const routes = [
       {
         element: <ProtectedRoute />,
         children: [
-          { path: "launches", element: <LaunchListPage /> },
           { path: "launches/:id", element: <LaunchDetailPage /> },
+          { path: "launches", element: <LaunchListPage /> },
         ],
       },
     ],

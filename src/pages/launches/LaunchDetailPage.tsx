@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
   Card,
@@ -10,9 +10,11 @@ import {
   Group,
 } from "@mantine/core";
 import axios from "axios";
+import { useEffect } from "react";
 
 export default function LaunchDetailPage() {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const { data, isLoading, error } = useQuery({
@@ -24,8 +26,15 @@ export default function LaunchDetailPage() {
       );
       return res.data;
     },
-   
   });
+
+  useEffect(() => {
+    if (data?.name) {
+      document.title = `${data.name} | Launch Detail`;
+    }
+  }, [data]);
+
+ 
 
   if (isLoading)
     return (
@@ -40,10 +49,13 @@ export default function LaunchDetailPage() {
   if (error)
     return (
       <Container>
-        <Text color="red" size="xl">
-          Error loading launch data
+        <Text color="red" size="lg" align="center">
+          Failed to load launch. Please check your internet or try again later.
         </Text>
-        <Button onClick={() => navigate("/launches")} mt="md">
+        <Button
+          onClick={() => navigate(`/launches?${searchParams.toString()}`)}
+          mt="md"
+        >
           Back to Launches
         </Button>
       </Container>
@@ -53,7 +65,10 @@ export default function LaunchDetailPage() {
     return (
       <Container>
         <Text>Launch not found</Text>
-        <Button onClick={() => navigate("/launches")} mt="md">
+        <Button
+          onClick={() => navigate(`/launches?${searchParams.toString()}`)}
+          mt="md"
+        >
           Back to Launches
         </Button>
       </Container>
@@ -61,7 +76,11 @@ export default function LaunchDetailPage() {
 
   return (
     <Container size="md" py="md">
-      <Button onClick={() => navigate("/launches")} mb="lg" variant="subtle">
+      <Button
+        onClick={() => navigate(`/launches?${searchParams.toString()}`)}
+        mb="lg"
+        variant="subtle"
+      >
         ← Back to Launches
       </Button>
 
@@ -79,7 +98,9 @@ export default function LaunchDetailPage() {
           </Badge>
         </Group>
 
-        <Text mt="md">{data.details || "No details available."}</Text>
+        <Text mt="md">
+          {data.details || "No details available for this launch."}
+        </Text>
 
         {data.links?.webcast && (
           <Button

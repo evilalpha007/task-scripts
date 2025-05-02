@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { Launch } from './types';
+import { Launches } from './types';
 
-export const getLaunches = async (): Promise<Launch[]> => {
+export const getLaunches = async (): Promise<Launches[]> => {
     const res = await axios.get('https://api.spacexdata.com/v4/launches');
     return res.data;
 };
