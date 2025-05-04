@@ -34,7 +34,7 @@ const navigate = useNavigate();
 
   return (
     <Container >
-      <Button mt="20px" onClick={handleLogout}>logout</Button>
+      <Button className="bg-red-500" mt="20px" onClick={handleLogout}>logout</Button>
       <Title order={2} mb="md">
         SpaceX Launches
       </Title>
